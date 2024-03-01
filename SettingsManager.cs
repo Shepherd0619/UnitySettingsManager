@@ -29,7 +29,7 @@ public class SettingsManager : MonoBehaviour
     }
 
     public static string settingsPath;
-    private SettingsData settingsData = new SettingsData();
+    private SettingsData settingsData;
 
     private void Awake()
     {
