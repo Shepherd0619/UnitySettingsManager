@@ -28,12 +28,11 @@ public class SettingsManager : MonoBehaviour
         }
     }
 
-    private string settingsPath;
-    private SettingsData settingsData;
+    public static string settingsPath;
+    private SettingsData settingsData = new SettingsData();
 
     private void Awake()
     {
-        settingsPath = Path.Combine(Application.persistentDataPath, "settings.json");
         LoadSettings();
     }
 
@@ -42,6 +41,7 @@ public class SettingsManager : MonoBehaviour
 	/// </summary>
     private void LoadSettings()
     {
+	    settingsPath = Path.Combine(Application.persistentDataPath, "settings.json");
         if (File.Exists(settingsPath))
         {
             string json = File.ReadAllText(settingsPath);
@@ -64,12 +64,22 @@ public class SettingsManager : MonoBehaviour
 
     public void SetInt(string key, int value)
     {
+	    if (settingsData == null)
+	    {
+			LoadSettings();
+	    }
+
         settingsData.SetInt(key, value);
         SaveSettings();
     }
 
     public int GetInt(string key, int defaultValue = 0)
     {
+	    if (settingsData == null)
+	    {
+		    LoadSettings();
+	    }
+
         if (settingsData.HasKey(key))
         {
             return settingsData.GetInt(key, defaultValue);
@@ -93,12 +103,22 @@ public class SettingsManager : MonoBehaviour
 
     public void SetFloat(string key, float value)
     {
+	    if (settingsData == null)
+	    {
+		    LoadSettings();
+	    }
+
         settingsData.SetFloat(key, value);
         SaveSettings();
     }
 
     public float GetFloat(string key, float defaultValue = 0f)
     {
+	    if (settingsData == null)
+	    {
+		    LoadSettings();
+	    }
+
         if (settingsData.HasKey(key))
         {
             return settingsData.GetFloat(key, defaultValue);
@@ -122,12 +142,22 @@ public class SettingsManager : MonoBehaviour
 
     public void SetString(string key, string value)
     {
+	    if (settingsData == null)
+	    {
+		    LoadSettings();
+	    }
+
         settingsData.SetString(key, value);
         SaveSettings();
     }
 
     public string GetString(string key, string defaultValue = "")
     {
+	    if (settingsData == null)
+	    {
+		    LoadSettings();
+	    }
+
         if (settingsData.HasKey(key))
         {
             return settingsData.GetString(key, defaultValue);
@@ -151,6 +181,11 @@ public class SettingsManager : MonoBehaviour
 
     public void DeleteAll()
     {
+	    if (settingsData == null)
+	    {
+		    LoadSettings();
+	    }
+
         PlayerPrefs.DeleteAll();
         if (File.Exists(settingsPath))
         {
@@ -161,6 +196,11 @@ public class SettingsManager : MonoBehaviour
 
     public void DeleteKey(string key)
     {
+	    if (settingsData == null)
+	    {
+		    LoadSettings();
+	    }
+
         PlayerPrefs.DeleteKey(key);
         if (settingsData.HasKey(key))
         {
@@ -171,6 +211,11 @@ public class SettingsManager : MonoBehaviour
 
     public bool HasKey(string key)
     {
+	    if (settingsData == null)
+	    {
+		    LoadSettings();
+	    }
+
         return PlayerPrefs.HasKey(key) || settingsData.HasKey(key);
     }
 }
